@@ -1,23 +1,18 @@
 package sk.essentialdata.lunchmenu
 
-import sk.essentialdata.lunchmenu.restaurants._
-
-import scala.concurrent.ExecutionContext.Implicits.global
+import com.typesafe.config.ConfigFactory
+import sk.essentialdata.lunchmenu.search.SearchJettyBinder
 
 /**
   * @author miso
   */
-object Boot extends scala.App with SolrManager {
+object Boot extends scala.App with IndexingManager with SearchJettyBinder {
+  bindSearchServlet()
 
   while(true) {
-    Seq(Bmp, Budvar, Club, Ferdinand, Flagship, Lanai, Mamut, Millenium, Napoli, Obyvacka, Pulitzer, Staromestsky, Street).map(process)
-    Thread.sleep(100000)
-  }
-
-  def process(restaurant: Restaurant) = {
-    restaurant.download map { case dishes =>
-      println(Console.YELLOW + s" ${restaurant.name} " + Console.RESET)
-      indexDishes(dishes, restaurant)
-    }
+    Restaurant.all.map(indexRestaurant)
+    Thread.sleep(ConfigFactory.load().getInt("indexing.intervalMinutes") * 60000)
   }
 }
+
+
