@@ -6,8 +6,9 @@ import com.typesafe.config.ConfigFactory
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.HttpSolrClient
 import org.apache.solr.common.SolrInputDocument
-import org.apache.solr.common.params.GroupParams
+import org.apache.solr.common.params.{GroupParams, HighlightParams}
 import sk.essentialdata.lunchmenu.Restaurant
+import sk.essentialdata.lunchmenu.highlighting.BlackList
 
 import scala.collection.JavaConversions._
 import scala.util.{Failure, Success, Try}
@@ -34,7 +35,8 @@ trait Solr {
 
   }
 
-  def displayTodayMenu(): Map[String, Seq[String]] = {
+  def displayTodayMenu(blacklistOpt: Option[BlackList] = None): Map[String, Seq[String]] = {
+
     val solrQuery = new SolrQuery("*")
       .addFilterQuery("day:NOW/DATE")
       .setRows(1000)
@@ -43,6 +45,16 @@ trait Solr {
       .set(GroupParams.GROUP_FIELD, "restaurant_name")
       .set(GroupParams.GROUP_TOTAL_COUNT, "true")
       .set(GroupParams.GROUP_LIMIT, 10)
+    blacklistOpt.map(_.meals) map {blacklistedMeals =>
+      solrQuery
+        .setHighlight(true)
+        .setParam(HighlightParams.Q, blacklistedMeals.mkString(" "))
+        .addHighlightField("lunch")
+        .setHighlightFragsize(0)
+        .setHighlightSnippets(1)
+        .setHighlightSimplePre("<mark>")
+        .setHighlightSimplePost("</mark>")
+    }
     Try(solrClient.query(solrQuery)) match {
       case Success(response) =>
         response.getGroupResponse.getValues.headOption match {
@@ -52,12 +64,28 @@ trait Solr {
             groupCommand.getValues.map{group =>
               val restaurant = group.getGroupValue
               val lunches = group.getResult map { solrDocument =>
-                solrDocument("lunch").toString
+
+                val lunch = solrDocument("lunch").toString
+                val hash = solrDocument("hash")
+
+                val highlightedLunchOpt = Option(response.getHighlighting.get(hash)) match {
+                  case Some(highlightingMap) => Option(highlightingMap.get("lunch")) match {
+                    case Some(snippets) => Option(snippets.get(0)) match {
+                      case Some(snippet) => Some(snippet)
+                      case None => println(s"Lunch $hash has zero snippets in Solr highlight response"); None
+                    }
+                    case None => println(s"Lunch $hash matched but no lunch is in Solr highlight response"); None
+                  }
+                  case None => println(s"Lunch $hash matched, but has no occurence in highlight section of Solr response"); None
+                }
+
+                highlightedLunchOpt.getOrElse(lunch)
               }
               restaurant -> lunches
             }.toMap
           case None => throw new RuntimeException(s"Solr did not respond with grouped result")
         }
+
       case Failure(t) =>
         println(s"Search failure: ${t.getMessage}")
         Map.empty
