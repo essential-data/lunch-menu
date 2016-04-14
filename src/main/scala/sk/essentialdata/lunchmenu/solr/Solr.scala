@@ -68,16 +68,21 @@ trait Solr {
                 val lunch = solrDocument("lunch").toString
                 val hash = solrDocument("hash")
 
-                val highlightedLunchOpt = Option(response.getHighlighting.get(hash)) match {
-                  case Some(highlightingMap) => Option(highlightingMap.get("lunch")) match {
-                    case Some(snippets) => Option(snippets.get(0)) match {
-                      case Some(snippet) => Some(snippet)
-                      case None => println(s"Lunch $hash has zero snippets in Solr highlight response"); None
+                val highlightedLunchOpt = Option(response.getHighlighting) match {
+                  case Some(highlighting) =>
+                    Option(highlighting.get(hash)) match {
+                      case Some(highlightingMap) => Option(highlightingMap.get("lunch")) match {
+                        case Some(snippets) => Option(snippets.get(0)) match {
+                          case Some(snippet) => Some(snippet)
+                          case None => println(s"Lunch $hash has zero snippets in Solr highlight response"); None
+                        }
+                        case None => println(s"Lunch $hash matched but no lunch is in Solr highlight response"); None
+                      }
+                      case None => println(s"Lunch $hash matched, but has no occurence in highlight section of Solr response"); None
                     }
-                    case None => println(s"Lunch $hash matched but no lunch is in Solr highlight response"); None
-                  }
-                  case None => println(s"Lunch $hash matched, but has no occurence in highlight section of Solr response"); None
+                  case None => if (blacklistOpt.nonEmpty) println(s"No highlighting result"); None
                 }
+
 
                 highlightedLunchOpt.getOrElse(lunch)
               }
