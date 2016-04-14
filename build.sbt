@@ -1,3 +1,5 @@
+import com.github.retronym.SbtOneJar._
+
 name := "lunch-menu"
 
 version := "1.0"
@@ -10,5 +12,9 @@ libraryDependencies ++= Seq(
   "org.scalatra"     %% "scalatra"          % "2.4.0",
   "javax.servlet"     % "javax.servlet-api" % "3.1.0",
   "org.eclipse.jetty" % "jetty-server"      % "9.3.9.M1",
-  "org.eclipse.jetty" % "jetty-webapp"      % "9.3.9.M1"
+  "org.eclipse.jetty" % "jetty-webapp"      % "9.3.9.M1",
+  "org.scalatra"     %% "scalatra-json"     % "2.4.0",
+  "org.json4s"       %% "json4s-jackson"    % "3.3.0"
 )
+
+oneJarSettings
