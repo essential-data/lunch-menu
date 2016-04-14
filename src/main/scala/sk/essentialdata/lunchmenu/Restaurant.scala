@@ -15,8 +15,8 @@ trait Restaurant {
 
   def name = getClass.getSimpleName.replace("$", "")
 
-  def download: Future[(String, Seq[Dish])] = {
+  def download: Future[Seq[Dish]] = {
     val browser = JsoupBrowser()
-    Future(browser.get(url)) map {doc => (name, parse(doc))}
+    Future(browser.get(url)) map {doc => parse(doc)}
   }
 }
