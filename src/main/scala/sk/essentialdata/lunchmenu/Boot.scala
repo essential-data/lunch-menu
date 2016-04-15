@@ -1,6 +1,7 @@
 package sk.essentialdata.lunchmenu
 
 import com.typesafe.config.ConfigFactory
+import org.joda.time.DateTime
 import sk.essentialdata.lunchmenu.search.SearchJettyBinder
 
 /**
@@ -11,7 +12,12 @@ object Boot extends scala.App with IndexingManager with SearchJettyBinder {
 
   while(true) {
     Restaurant.all.map(indexRestaurant)
-    Thread.sleep(ConfigFactory.load().getInt("indexing.intervalMinutes") * 60000)
+    val isWeekDay = DateTime.now().getDayOfWeek < 5
+    val hour = DateTime.now().getHourOfDay
+    val isPeakTime = isWeekDay && (hour >= 8) && (hour <= 14)
+    val intervalMinutes = ConfigFactory.load().getInt(s"indexing.intervalMinutes.${if (isPeakTime)"peakTime"; else "otherwise"}")
+    println(intervalMinutes)
+    Thread.sleep(intervalMinutes * 60000)
   }
 }
 
