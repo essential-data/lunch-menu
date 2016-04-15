@@ -26,6 +26,7 @@ object Restaurant {
   def all = Seq(
     Bmp,
     Budvar,
+    Cafe002,
     Club,
     Ferdinand,
     Flagship,
@@ -36,6 +37,7 @@ object Restaurant {
     Obyvacka,
     Pulitzer,
     Staromestsky,
-    Street
+    Street,
+    Suvlaki
   )
 }
