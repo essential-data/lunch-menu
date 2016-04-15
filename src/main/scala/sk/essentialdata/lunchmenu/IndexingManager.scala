@@ -32,7 +32,11 @@ trait IndexingManager extends Solr {
       solrDoc.addField("hash", s"${restaurant.name} - ${DateTime.now().withTimeAtStartOfDay()} - ${dish.name}")
       solrDoc
     }
-    Future(addDocs(solrDocs, restaurant))
+    if (solrDocs.isEmpty) {
+      Future(println(s"Empty menu for ${restaurant.name}"))
+    } else {
+      Future(addDocs(solrDocs, restaurant))
+    }
   }
 
 

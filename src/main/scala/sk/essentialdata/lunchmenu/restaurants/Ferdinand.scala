@@ -12,6 +12,6 @@ case object Ferdinand extends Restaurant {
   def url: String = "http://www.papanica.sk/sk/denne.php?id=4445&kraj=1"
 
   override def parse(doc: Document): Seq[Dish] = {
-    doc >> element("#right table") >> texts("td h3.text") map SimpleDish toSeq
+    doc >> element("#right table") >> texts("td:nth-of-type(2) h3.text") map SimpleDish toSeq
   }
 }
