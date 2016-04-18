@@ -16,7 +16,7 @@ object Boot extends scala.App with IndexingManager with SearchJettyBinder {
     val hour = DateTime.now().getHourOfDay
     val isPeakTime = isWeekDay && (hour >= 8) && (hour <= 14)
     val intervalMinutes = ConfigFactory.load().getInt(s"indexing.intervalMinutes.${if (isPeakTime)"peakTime"; else "otherwise"}")
-    println(intervalMinutes)
+    println(s"Poling with interval $intervalMinutes minutes")
     Thread.sleep(intervalMinutes * 60000)
   }
 }

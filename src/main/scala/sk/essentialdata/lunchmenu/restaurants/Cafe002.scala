@@ -13,9 +13,9 @@ case object Cafe002 extends Restaurant with FacebookFeed with SelectingDayOfWeek
 
   override def parse(doc: Document): Seq[Dish] = {
     val todayMenuOpt: Option[String] = doc.latestPosts(10 /* spammeri */) find {
-      _.contains(currentWeekDay)
+      _.toUpperCase.contains(currentWeekDay)
     }
-    val dishes: Seq[SimpleDish] = todayMenuOpt map {_.split("""\d\.""").map(_.split("""\.\.\.""")(0).split(currentWeekDay).last.trim).map(SimpleDish).toSeq} getOrElse Seq.empty
+    val dishes: Seq[SimpleDish] = todayMenuOpt map {_.split(""" \d\.""").map(_.split("""\.\.\.""")(0).split(s"(?iu)$currentWeekDay").last.trim).map(SimpleDish).toSeq} getOrElse Seq.empty
     dishes
   }
 }
