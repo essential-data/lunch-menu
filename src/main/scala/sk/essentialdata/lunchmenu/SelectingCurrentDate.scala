@@ -8,5 +8,6 @@ import org.joda.time.format.DateTimeFormat
   */
 trait SelectingCurrentDate {
   def currentDate(format: String) = DateTimeFormat.forPattern(format).print(DateTime.now())
+  def tomorrowDate(format: String) = DateTimeFormat.forPattern(format).print(DateTime.now().plusDays(1))
 
 }
