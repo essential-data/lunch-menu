@@ -76,7 +76,7 @@ trait Solr {
                           case Some(snippet) => Some(snippet)
                           case None => println(s"Lunch $hash has zero snippets in Solr highlight response"); None
                         }
-                        case None => println(s"Lunch $hash matched but no lunch is in Solr highlight response"); None
+                        case None => None // no blacklist items
                       }
                       case None => println(s"Lunch $hash matched, but has no occurence in highlight section of Solr response"); None
                     }
