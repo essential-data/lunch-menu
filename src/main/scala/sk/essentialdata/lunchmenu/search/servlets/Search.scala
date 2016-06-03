@@ -14,7 +14,7 @@ import scala.xml.{Elem, Unparsed}
 class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
-  get("/lunch-menu") {
+  get("/lunch-menu/") {
     contentType = "text/html"
     menuToHtml(displayTodayMenu())
   }
