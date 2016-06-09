@@ -30,21 +30,30 @@ class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
   }
 
   def menuToHtml(todayMenu: Map[String, Seq[String]]): Elem =
-    <body>
-      <style>
-        table {{
-          border-collapse: collapse;
-        }}
-        mark {{
-          background-color: white;
-          color: red;
-        }}
-      </style>
-      <table border="1">
-        {for (menu <- todayMenu) yield {
-        val headOption = menu._2.headOption
-        for (lunch <- menu._2) yield <tr>{if(headOption.contains(lunch)) <td rowspan={menu._2.size.toString}>{menu._1}</td>}<td>{Unparsed(lunch)}</td></tr>
-      } }
-      </table>
-    </body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Čo dobré na obed?</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+      </head>
+      <body>
+        <style>
+          table {{
+            border-collapse: collapse;
+          }}
+          mark {{
+            background-color: white;
+            color: red;
+          }}
+        </style>
+        <table class="table">
+          {for (menu <- todayMenu) yield {
+          val headOption = menu._2.headOption
+          for (lunch <- menu._2) yield <tr>{if(headOption.contains(lunch)) <td rowspan={menu._2.size.toString}>{menu._1}</td>}<td>{Unparsed(lunch)}</td></tr>
+        } }
+        </table>
+      </body>
 }
