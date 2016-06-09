@@ -56,4 +56,5 @@ class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
         } }
         </table>
       </body>
+    </html>
 }
