@@ -16,12 +16,12 @@ class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
 
   get("/lunch-menu/") {
     contentType = "text/html"
-    menuToHtml(displayTodayMenu())
+    renderHtmlMenu(displayTodayMenu())
   }
 
   get("/lunch-menu/keto") {
     contentType = "text/html"
-    menuToHtml(displayTodayMenu(Some(new BlackList("keto"))))
+    renderHtmlMenu(displayTodayMenu(Some(new BlackList("keto")))).toString()
   }
 
   get("/lunch-menu/json") {
@@ -29,15 +29,18 @@ class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
     displayTodayMenu()
   }
 
-  def menuToHtml(todayMenu: Map[String, Seq[String]]): Elem =
-    <!DOCTYPE html>
+  private def renderHtmlMenu(todayMenu: Map[String, Seq[String]]): String =
+    "<!DOCTYPE html>" + menuToHtml(todayMenu)
+
+
+  private def menuToHtml(todayMenu: Map[String, Seq[String]]): Elem =
     <html lang="en">
       <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Čo dobré na obed?</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
       </head>
       <body>
         <style>
@@ -49,12 +52,15 @@ class Search extends ScalatraServlet with JacksonJsonSupport with Solr {
             color: red;
           }}
         </style>
-        <table class="table">
-          {for (menu <- todayMenu) yield {
-          val headOption = menu._2.headOption
-          for (lunch <- menu._2) yield <tr>{if(headOption.contains(lunch)) <td rowspan={menu._2.size.toString}>{menu._1}</td>}<td>{Unparsed(lunch)}</td></tr>
-        } }
-        </table>
+        { menuToHtmlTable(todayMenu) }
       </body>
     </html>
+
+  private def menuToHtmlTable(todayMenu: Map[String, Seq[String]]): Elem =
+    <table class="table">
+      {for (menu <- todayMenu) yield {
+      val headOption = menu._2.headOption
+      for (lunch <- menu._2) yield <tr>{if(headOption.contains(lunch)) <td rowspan={menu._2.size.toString}>{menu._1}</td>}<td>{Unparsed(lunch)}</td></tr>
+    } }
+    </table>
 }
