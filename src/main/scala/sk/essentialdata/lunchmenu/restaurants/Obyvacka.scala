@@ -12,6 +12,6 @@ case object Obyvacka extends Restaurant {
   def url: String = "https://www.zomato.com/sk/bratislava/ob%C3%BDva%C4%8Dka-cafe-restaurant-star%C3%A9-mesto-bratislava-i/menu#daily"
 
   override def parse(doc: Document): Seq[Dish] = {
-    doc >> element(".tmi-group") >> texts("div.tmi-name") filter {_.contains("/")} map SimpleDish toSeq
+    doc >> element(".tmi-group") >> texts("div.tmi-name") filter {x => x.contains("/") || x.take(1).forall(Character.isDigit)} map SimpleDish toSeq
   }
 }

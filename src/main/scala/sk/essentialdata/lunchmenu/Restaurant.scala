@@ -30,6 +30,7 @@ object Restaurant {
     Club,
     Ferdinand,
     Flagship,
+    LaCocotte,
     Lanai,
     Mamut,
     Millenium,
