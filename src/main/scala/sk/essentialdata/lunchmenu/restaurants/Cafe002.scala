@@ -6,7 +6,7 @@ import sk.essentialdata.lunchmenu._
 /**
   * @author miso
   */
-case object Cafe002 extends Restaurant with FacebookFeed with SelectingDayOfWeek {
+case object Cafe002 extends Restaurant with FacebookFeed with SelectingDayOfWeek[String] {
   def url: String = "https://www.facebook.com/Cafe-002-39386032695"
 
   def weekDays: Seq[String] = Seq("PONDELOK", "UTOROK", "STREDA", "ŠTVRTOK", "PIATOK")

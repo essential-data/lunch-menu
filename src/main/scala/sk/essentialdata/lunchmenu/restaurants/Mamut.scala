@@ -8,7 +8,7 @@ import sk.essentialdata.lunchmenu._
 /**
   * @author miso
   */
-case object Mamut extends Restaurant with SelectingDayOfWeek {
+case object Mamut extends Restaurant with SelectingDayOfWeek[String] {
   def url: String = "http://www.mamutpub.sk/web/jedalny-listok"
 
   def weekDays: Seq[String] = Seq("Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok")

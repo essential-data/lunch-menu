@@ -8,7 +8,7 @@ import sk.essentialdata.lunchmenu._
 /**
   * @author miso
   */
-case object Millenium extends Restaurant with SelectingDayOfWeek with SelectingCurrentDate {
+case object Millenium extends Restaurant with SelectingDayOfWeek[String] with SelectingCurrentDate {
   def url: String = "http://www.mileniumcafe.sk/denne-menu"
 
   def weekDays: Seq[String] = Seq("Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok")

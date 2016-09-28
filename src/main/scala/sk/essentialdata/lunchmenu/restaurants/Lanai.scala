@@ -5,10 +5,12 @@ import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.Document
 import sk.essentialdata.lunchmenu.{Dish, Restaurant, SelectingDayOfWeek, SimpleDish}
 
+import scala.language.postfixOps
+
 /**
   * @author miso
   */
-case object Lanai extends Restaurant with SelectingDayOfWeek {
+case object Lanai extends Restaurant with SelectingDayOfWeek[String] {
   def url: String = "http://www.lanai-cafe.sk/menu/"
 
   def weekDays: Seq[String] = Seq("PONDELOK", "UTOROK", "STREDA", "ŠTVRTOK", "PIATOK")

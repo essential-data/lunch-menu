@@ -5,10 +5,10 @@ import org.joda.time.DateTime
 /**
   * @author miso
   */
-trait SelectingDayOfWeek {
-  def weekDays: Seq[String]
+trait SelectingDayOfWeek[WeekDayType] {
+  def weekDays: Seq[WeekDayType]
 
-  def currentWeekDay = weekDays((DateTime.now().getDayOfWeek - 1) % weekDays.size)
-  def tomorrowWeekDay = weekDays(DateTime.now().getDayOfWeek % weekDays.size)
+  def currentWeekDay: WeekDayType = weekDays((DateTime.now().getDayOfWeek - 1) % weekDays.size)
+  def tomorrowWeekDay: WeekDayType = weekDays(DateTime.now().getDayOfWeek % weekDays.size)
 
 }

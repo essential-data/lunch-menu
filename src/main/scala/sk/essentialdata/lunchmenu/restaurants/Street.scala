@@ -8,18 +8,19 @@ import sk.essentialdata.lunchmenu._
 /**
   * @author miso
   */
-case object Street extends Restaurant with SelectingDayOfWeek {
-  def url: String = "http://stary.street54.sk/lunch-time/#menu"
+case object Street extends Restaurant with SelectingDayOfWeek[String] {
+  def url: String = "http://www.street54.sk/#menu"
 
-  def weekDays: Seq[String] = Seq("Pondelok / Monday", "Utorok / Tuesday", "Streda / Wednesday", "Štvrtok / Thursday", "Piatok / Friday")
+  def weekDays: Seq[String] = Seq("pondelok", "utorok", "streda", "štvrtok", "piatok")
 
   override def parse(doc: Document): Seq[Dish] = {
-    val todayMenu = doc >> elementList("#menu-dni") filter {el => (el >> text(".den")) == currentWeekDay}
+    val todayMenu = doc >> elementList(".one_half.parallax_scroll") filter { el =>
+      val title = el >> allText(".ppb_menu_title")
+      title.toLowerCase.contains(currentWeekDay)
+    }
 
-    val soups = todayMenu flatMap {_ >> texts(".cela-polievka")} map Soup
+    val dishes = todayMenu flatMap {_ >> texts(".menu_content_classic") filter(_.length > 25)} map SimpleDish
 
-    val mainDishes = todayMenu flatMap {_ >> texts(".cele-jedlo")} map MainDish
-
-    soups ++ mainDishes
+    dishes
   }
 }
