@@ -5,6 +5,6 @@ import sk.essentialdata.lunchmenu.{Restaurant, RestaurantTest}
 /**
   * @author miso
   */
-class Flagship$Test extends RestaurantTest {
-  override def restaurant: Restaurant = Flagship
+class MamutTest extends RestaurantTest {
+  override def restaurant: Restaurant = Mamut
 }

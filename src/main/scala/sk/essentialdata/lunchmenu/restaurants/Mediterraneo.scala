@@ -8,10 +8,10 @@ import sk.essentialdata.lunchmenu.{Dish, Restaurant, SimpleDish}
 /**
   * @author miso
   */
-case object Staromestsky extends Restaurant {
-  def url: String = "https://www.zomato.com/sk/bratislava/staromestsk%C3%BD-pub-restaurant-star%C3%A9-mesto-bratislava-i/denn%C3%A9-menu"
+case object Mediterraneo extends Restaurant {
+  def url: String = "https://www.zomato.com/sk/bratislava/restaurante-mediterraneo-star%C3%A9-mesto-bratislava-i/denn%C3%A9-menu"
 
   override def parse(doc: Document): Seq[Dish] = {
-    doc >> texts(".tmi-name") dropWhile {_.startsWith("!!!")} map SimpleDish toSeq
+    doc >> texts(".tmi-daily") map SimpleDish toSeq
   }
 }

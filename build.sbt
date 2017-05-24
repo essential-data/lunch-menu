@@ -19,3 +19,5 @@ libraryDependencies ++= Seq(
 )
 
 oneJarSettings
+
+parallelExecution in Test := false

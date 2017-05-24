@@ -11,7 +11,9 @@ trait RestaurantTest extends AsyncFlatSpec with Matchers {
   def restaurant: Restaurant
 
   it should "download" in {
+    println(s"Start ${restaurant.name}")
     restaurant.download.map { dishes =>
+      println(s"Stop ${restaurant.name}")
       println(dishes.mkString("\n"))
       assert(dishes.nonEmpty)
     }

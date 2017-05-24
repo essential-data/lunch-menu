@@ -12,7 +12,7 @@ case object Budvar extends Restaurant with SelectingCurrentDate {
   def url: String = "http://www.budweiser-budvar.sk/jedalny-listok.php?lang=sk"
 
   override def parse(doc: Document): Seq[Dish] = {
-    if (doc >> text("#jl-rozpis") contains currentDate("d.M.y")) {
+    if (doc >> text("#jl-rozpis") contains currentDate("d.MM.y")) {
       doc >> elementList("#jl-rozpis div") filter {_.attr("style").contains("Palatino")} map {_.text} map SimpleDish
     } else {
       Seq.empty
