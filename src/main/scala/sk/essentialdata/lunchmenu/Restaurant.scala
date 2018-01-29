@@ -42,6 +42,7 @@ object Restaurant {
     Pulitzer,
     Staromestsky,
     Street,
-    Suvlaki
+    Suvlaki,
+    UNas
   )
 }
