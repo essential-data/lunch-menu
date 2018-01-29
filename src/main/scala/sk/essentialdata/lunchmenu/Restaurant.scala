@@ -38,6 +38,7 @@ object Restaurant {
     Millenium,
     Napoli,
     Obyvacka,
+    Primavera,
     Pulitzer,
     Staromestsky,
     Street,
