@@ -31,6 +31,7 @@ object Restaurant {
     Ferdinand,
     Flagship,
     Kasa,
+    Kozlovna,
     LaCocotte,
     Lanai,
     Mamut,
