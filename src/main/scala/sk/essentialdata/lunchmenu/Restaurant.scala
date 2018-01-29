@@ -30,6 +30,7 @@ object Restaurant {
     EverythingFresh,
     Ferdinand,
     Flagship,
+    Kasa,
     LaCocotte,
     Lanai,
     Mamut,
