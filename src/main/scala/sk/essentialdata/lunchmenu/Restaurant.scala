@@ -27,7 +27,6 @@ object Restaurant {
     Bmp,
     Budvar,
     Cafe002,
-    Club,
     EverythingFresh,
     Ferdinand,
     Flagship,
