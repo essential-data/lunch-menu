@@ -14,7 +14,7 @@ trait Restaurant {
   def url: String
   def parse(doc: Document): Seq[Dish]
 
-  def name = getClass.getSimpleName.replace("$", "")
+  def name: String = getClass.getSimpleName.replace("$", "")
 
   def download: Future[Seq[Dish]] = {
     val browser = JsoupBrowser()
@@ -31,6 +31,7 @@ object Restaurant {
     Ferdinand,
     Flagship,
     Kasa,
+    Kgb,
     Kozlovna,
     LaCocotte,
     Lanai,
@@ -43,7 +44,6 @@ object Restaurant {
     Pulitzer,
     Staromestsky,
     Street,
-    Suvlaki,
-    UNas
+    Suvlaki
   )
 }
